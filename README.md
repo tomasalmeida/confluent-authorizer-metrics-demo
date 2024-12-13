@@ -13,3 +13,4 @@
     ./setAcls.sh
 ```
 
+Start jconsole

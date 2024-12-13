@@ -9,9 +9,14 @@ sleep 20
 
 # create topics
 kafka-topics --bootstrap-server localhost:19092 --command-config ./clients/admin.properties --create --topic topic-admin
-kafka-topics --bootstrap-server localhost:19092 --command-config ./clients/admin.properties --create --topic topic-alice
 kafka-topics --bootstrap-server localhost:19092 --command-config ./clients/admin.properties --create --topic topic-bob
 kafka-topics --bootstrap-server localhost:19092 --command-config ./clients/admin.properties --create --topic topic-all
+kafka-topics --bootstrap-server localhost:19092 --command-config ./clients/admin.properties --create --topic topic-alice
+
+# create permissions to admin
+kafka-acls --bootstrap-server localhost:19092 --command-config ./clients/admin.properties \
+  --add --consumer --producer --allow-principal "User:admin" --group '*' \
+  --topic _confluent-command --topic _confluent-telemetry-metrics --topic _confluent_balancer_api_state --topic confluent-audit-log-events --topic topic-admin
 
 # create permissions to alice
 kafka-acls --bootstrap-server localhost:19092 --command-config ./clients/admin.properties \

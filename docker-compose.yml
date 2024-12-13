@@ -33,46 +33,24 @@ services:
       - ${PWD}/jaas/broker.config:/etc/kafka/secrets/kafka-client-jaas.config
     environment:
       KAFKA_BROKER_ID: 101
-      # listeners
-      KAFKA_LISTENERS: DOCKER://:9092,BROKER://:9093,HOST://:19092
-      KAFKA_ADVERTISED_LISTENERS: DOCKER://broker:9092,BROKER://broker:9093,HOST://localhost:19092
       # jmx
       KAFKA_JMX_HOSTNAME: localhost
       KAFKA_JMX_PORT: 10091
-      KAFKA_LISTENER_NAME_BROKER_PLAIN_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required \
-        username="broker" \
-        password="broker-secret" \
-        user_broker="broker-secret";
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       # listeners
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER:SASL_PLAINTEXT,BROKER:SASL_PLAINTEXT,HOST:SASL_PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER:PLAINTEXT,BROKER:PLAINTEXT,HOST:SASL_PLAINTEXT
+      # KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER:SASL_PLAINTEXT,BROKER:SASL_PLAINTEXT,HOST:SASL_PLAINTEXT
+      KAFKA_LISTENERS: DOCKER://:9092,BROKER://:9093,HOST://:19092
+      KAFKA_ADVERTISED_LISTENERS: DOCKER://broker:9092,BROKER://broker:9093,HOST://localhost:19092
       KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
       # listener host
       KAFKA_LISTENER_NAME_HOST_SASL_ENABLED_MECHANISMS: PLAIN
       KAFKA_LISTENER_NAME_HOST_PLAIN_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required \
         user_admin="admin-secret" \ 
         user_alice="alice-secret" \ 
-        user_bob="bob-secret";
-      # metrics security
-      CONFLUENT_METRICS_REPORTER_SASL_MECHANISM: PLAIN
-      CONFLUENT_METRICS_REPORTER_SECURITY_PROTOCOL: SASL_PLAINTEXT
-      CONFLUENT_METRICS_REPORTER_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required \
-        username="controlcenter" \
-        password="controlcenter-secret";
-      # security listener docker
-      KAFKA_LISTENER_NAME_DOCKER_SASL_ENABLED_MECHANISMS: PLAIN
-      KAFKA_LISTENER_NAME_DOCKER_PLAIN_SASL_JAAS_CONFIG: org.apache.kafka.common.security.plain.PlainLoginModule required \
-        user_schemaregistry="schemaregistry-secret" \
-        user_controlcenter="controlcenter-secret";
-      # security listener interbroker
+        user_bob="bob-secret" \ 
+        user_chuck="chuck-secret";
       KAFKA_INTER_BROKER_LISTENER_NAME: BROKER
-      KAFKA_LISTENER_NAME_BROKER_SASL_ENABLED_MECHANISMS: PLAIN
-      KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
-      # metrics
-      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
-      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: "broker:9092"
-      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
-      CONFLUENT_METRICS_ENABLE: 'false'
       # interesting features
       KAFKA_DELETE_TOPIC_ENABLE: 'true'
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
@@ -86,7 +64,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_AUTHORIZER_CLASS_NAME: io.confluent.kafka.security.authorizer.ConfluentServerAuthorizer
       KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: 'true'
-      # KAFKA_SUPER_USERS: User:admin;User:ANONYMOUS
+      KAFKA_SUPER_USERS: User:admin
       # security zookeeper
       KAFKA_OPTS: 
         -Djava.security.auth.login.config=/etc/kafka/secrets/kafka-client-jaas.config
