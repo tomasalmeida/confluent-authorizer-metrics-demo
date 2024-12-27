@@ -13,4 +13,10 @@
     ./setAcls.sh
 ```
 
-Start jconsole
+Start jconsole and check the metrics
+
+* kafka.server:type=confluent-authorizer-metrics:authorization-request-rate-per-minute
+* kafka.server:type=confluent-authorizer-metrics:Authorization-allowed-rate-per-minute
+* kafka.server:type=confluent-authorizer-metrics:Authorization-denied-rate-per-minute
+* kafka.server:type=confluent-authorizer-metrics:authorizer-authorization-latency-p90
+* kafka.server:type=confluent-authorizer-metrics:authorizer-authorization-latency-p99
